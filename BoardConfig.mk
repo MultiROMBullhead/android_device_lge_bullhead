@@ -145,4 +145,30 @@ USE_CLANG_PLATFORM_BUILD := true
 
 TARGET_FS_CONFIG_GEN += device/lge/bullhead/config.fs
 
+#MultiROM config
+MR_INPUT_TYPE := type_b
+MR_INIT_DEVICES := device/lge/bullhead/mr_init_devices.c
+MR_DPI := hdpi
+MR_DPI_FONT := 220
+MR_FSTAB := device/lge/bullhead/twrp.fstab
+MR_USE_MROM_FSTAB := false
+MR_KEXEC_MEM_MIN := 0x0
+MR_DEVICE_HOOKS := device/lge/bullhead/mr_hooks.c
+MR_DEVICE_HOOKS_VER := 6
+MR_PIXEL_FORMAT := "ABGR_8888"
+MR_ENCRYPTION := true
+MR_ENCRYPTION_SETUP_SCRIPT := device/lge/bullhead/mr_cp_crypto.sh
+MR_ENCRYPTION_FAKE_PROPERTIES := true
+MR_USE_QCOM_OVERLAY := true
+MR_QCOM_OVERLAY_HEADER := device/lge/bullhead/mr_qcom_overlay.h
+MR_QCOM_OVERLAY_CUSTOM_PIXEL_FORMAT := MDP_ABGR_8888
+
+include device/lge/bullhead/MR_REC_VERSION.mk
+
+ifeq ($(MR_REC_VERSION),)
+MR_REC_VERSION := $(shell date -u +%Y%m%d)-01
+endif
+
+BOARD_MKBOOTIMG_ARGS += --board mrom$(MR_REC_VERSION)
+
 -include vendor/lge/bullhead/BoardConfigVendor.mk
